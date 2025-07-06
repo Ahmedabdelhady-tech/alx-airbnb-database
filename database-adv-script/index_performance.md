@@ -1,11 +1,6 @@
-
-# Index Performance Measurement
-
-This document records query performance before and after adding indexes.
-
 ## 1. Performance Without Indexes
 
-### Sample Query With Index
+### Sample Query
 
 ```sql
 EXPLAIN ANALYZE
