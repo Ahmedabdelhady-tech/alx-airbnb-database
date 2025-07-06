@@ -1,28 +1,17 @@
--- Query 1: INNER JOIN to retrieve all bookings along with their booking users
+-- Query 1: Find all properties where the average rating is greater than 4.0 using a non-correlated subquery
 SELECT
-  b.*,       -- all booking fields
-  u.*        -- all user fields
-FROM
-  bookings AS b
-  INNER JOIN users AS u ON b.user_id = u.id
-ORDER BY b.id;
-
--- Query 2: LEFT JOIN to retrieve all properties and their associated reviews,
--- including properties without any reviews
-SELECT
-  p.*,       -- all property fields
-  r.*        -- review fields or NULL if no review exists
+  *
 FROM
   properties AS p
-  LEFT JOIN reviews AS r ON p.id = r.property_id
+WHERE
+  (SELECT AVG(r.rating) FROM reviews AS r WHERE r.property_id = p.id) > 4.0
 ORDER BY p.id;
 
--- Query 3: FULL OUTER JOIN to retrieve all users and all bookings,
--- including users without bookings and bookings without linked users
+-- Query 2: Find users who have made more than 3 bookings using a correlated subquery
 SELECT
-  u.*,       -- user fields or NULL if no user exists
-  b.*        -- booking fields or NULL if no booking exists
+  *
 FROM
   users AS u
-  FULL OUTER JOIN bookings AS b ON u.id = b.user_id
+WHERE
+  (SELECT COUNT(*) FROM bookings AS b WHERE b.user_id = u.id) > 3
 ORDER BY u.id;
